@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet"><style>body{margin:0;background:#eef2fb;font-family:'Inter Tight',system-ui,sans-serif;-webkit-font-smoothing:antialiased}a{color:#2743b3;text-decoration:none}a:hover{color:#1c3391}input::placeholder{color:#a7aec2}input:focus{outline:none}@keyframes dcFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes dcSpin{to{transform:rotate(360deg)}}@keyframes dcBar{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}</style></helmet>
+<sc-if value="{{ isAuthView }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;min-height:100vh;background:#f4f7ff">
+<div style="position:relative;flex:0 0 46%;min-width:0;background:linear-gradient(170deg,#101b3d 0%,#1b2b5e 45%,#0d1530 100%);color:#fff;padding:40px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden">
+<div style="position:absolute;inset:0;background-image:url('assets/crowd.jpeg');background-size:cover;background-position:52% 38%;pointer-events:none"></div>
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,21,48,.55) 0%,rgba(16,27,61,.28) 30%,rgba(15,26,60,.6) 62%,rgba(11,18,42,.94) 100%);pointer-events:none"></div>
+<div style="position:relative;display:flex;flex-direction:column;gap:18px">
+<img src="assets/egov-logo.png" alt="eGov Foundation" style="height:38px;width:152px;align-self:flex-start;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.35))">
+<div>
+<div style="font-size:24px;font-weight:700;letter-spacing:-.02em;text-shadow:0 1px 10px rgba(0,0,0,.3)">DIGIT Complaint Management</div>
+<div style="font-size:11.5px;letter-spacing:.14em;font-weight:500;margin-top:8px;color:rgba(255,255,255,.7)">DIGITAL INFRASTRUCTURE FOR PUBLIC SERVICES</div>
+</div>
+</div>
+<div style="position:relative;display:flex;flex-direction:column;gap:26px;max-width:460px">
+<div>
+<h1 style="font-size:44px;line-height:1.08;font-weight:700;letter-spacing:-.035em;margin:0 0 18px;text-shadow:0 2px 16px rgba(0,0,0,.4)">Manage complaints from intake to closure.</h1>
+<p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.8);margin:0;text-wrap:pretty;text-shadow:0 1px 8px rgba(0,0,0,.4)">Sign in to receive complaints, assign them to the right team, track service timelines, record actions and evidence, and monitor resolution across departments and localities.</p>
+</div>
+<div style="font-size:12px;color:rgba(255,255,255,.55)">© 2026 eGovernments Foundation · DIGIT 2.9</div>
+</div>
+</div>
+
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 32px;gap:18px">
+<sc-if value="{{ showLangPicker }}" hint-placeholder-val="{{ true }}">
+<div style="width:100%;max-width:396px;display:flex;justify-content:flex-end">
+<button style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #d9deec;border-radius:8px;padding:9px 12px;font:500 13.5px 'Inter Tight',sans-serif;color:#26304a;cursor:pointer;box-shadow:0 1px 2px rgba(20,30,70,.05)" style-hover="border-color:#b9c2dc">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4a5570" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"></path></svg>
+English
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b7590" stroke-width="2.2"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+</div>
+</sc-if>
+
+<div style="width:100%;max-width:396px;background:#fff;border:1px solid #e6eaf4;border-radius:14px;box-shadow:0 10px 30px rgba(24,38,88,.07);padding:30px 32px 24px">
+
+<sc-if value="{{ isEmailStep }}" hint-placeholder-val="{{ true }}">
+<div style="animation:dcFade .25s ease both">
+<div style="font:600 11.5px 'Inter Tight',sans-serif;letter-spacing:.14em;color:#3b55b8;margin-bottom:8px">SECURE SIGN IN</div>
+<h2 style="font-size:30px;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 22px">Access your account</h2>
+<div style="display:flex;flex-direction:column">
+<div style="{{ emailGroupStyle }}">
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">ADMINISTRATOR EMAIL</label>
+<input type="email" value="{{ email }}" onChange="{{ onEmail }}" onKeyDown="{{ onKey }}" placeholder="name@organisation.org" style="{{ emailInputStyle }}" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px">
+<label style="font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484">PASSWORD</label>
+<button onClick="{{ openForgot }}" style="background:transparent;border:none;padding:0;font:500 12.5px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer" style-hover="color:#1c3391">Forgot password?</button>
+</div>
+<input type="password" value="{{ password }}" onChange="{{ onPassword }}" onKeyDown="{{ onKey }}" placeholder="Enter your password" style="{{ passwordInputStyle }}" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:9px;align-items:flex-start;background:#fbf7ef;border:1px solid #ece0c9;border-radius:9px;padding:11px 12px;margin-top:12px;animation:dcFade .2s ease both">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a8792b" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4.5M12 16h.01"></path></svg>
+<div style="min-width:0">
+<div style="font:500 13.5px/1.45 'Inter Tight',sans-serif;color:#6c5322;text-wrap:pretty">{{ errorText }}</div>
+<sc-if value="{{ errorHasAction }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ errorAction }}" style="margin-top:8px;background:transparent;border:1px solid #2743b3;border-radius:8px;padding:7px 12px;font:500 13px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer;transition:background .15s ease,box-shadow .15s ease" style-hover="background:rgba(39,67,179,.08);box-shadow:0 1px 3px rgba(39,67,179,.18)" style-active="background:rgba(39,67,179,.14)">{{ errorActionLabel }}</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+<button onClick="{{ submitEmail }}" disabled="{{ submitDisabled }}" style="{{ continueStyle }}">Continue</button>
+</div>
+<div style="display:flex;align-items:center;gap:12px;margin:20px 0 16px;order:2"><div style="flex:1;height:1px;background:#e7eaf3"></div><span style="font:500 10.5px 'Inter Tight',sans-serif;letter-spacing:.18em;color:#9aa3bd">OR</span><div style="flex:1;height:1px;background:#e7eaf3"></div></div>
+<div style="{{ ssoGroupStyle }}">
+<sc-if value="{{ showGoogle }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ openGoogle }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid #d9deec;border-radius:9px;padding:12px;font:500 14.5px 'Inter Tight',sans-serif;color:#1b2136;cursor:pointer;margin-bottom:10px" style-hover="background:#f7f9ff;border-color:#c3cbe4">
+<svg width="17" height="17" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2.5 24 .5 14.6.5 6.5 5.9 2.6 13.7l7.8 6.1C12.3 13.8 17.6 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 7.1-10 7.1-17.5z"></path><path fill="#FBBC05" d="M10.4 28.2c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.8-6.1C1 15.9 0 19.8 0 23.5s1 7.6 2.6 10.8l7.8-6.1z"></path><path fill="#34A853" d="M24 47.5c6.2 0 11.5-2 15.4-5.6l-7.5-5.8c-2.1 1.4-4.8 2.2-7.9 2.2-6.4 0-11.7-4.3-13.6-10.1l-7.8 6.1C6.5 42.1 14.6 47.5 24 47.5z"></path></svg>
+Sign in with Google</button>
+</sc-if>
+<sc-if value="{{ showGithub }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ openGithub }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid #d9deec;border-radius:9px;padding:12px;font:500 14.5px 'Inter Tight',sans-serif;color:#1b2136;cursor:pointer" style-hover="background:#f7f9ff;border-color:#c3cbe4">
+<svg width="17" height="17" viewBox="0 0 16 16" fill="#1b2136"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 014 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+Sign in with GitHub</button>
+</sc-if>
+</div>
+</div>
+<div style="text-align:center;font:400 13.5px 'Inter Tight',sans-serif;color:#5a6484;margin-top:18px">New to the platform? <button onClick="{{ openSignup }}" style="background:none;border:none;padding:0;font:600 13.5px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer" style-hover="color:#1c3391">Create an account</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSuVerify }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="display:flex;gap:10px;margin-bottom:22px">
+<div style="{{ suTab1 }}">ACCOUNT</div>
+<div style="{{ suTab2 }}">PREFERENCES</div>
+<div style="{{ suTab3 }}">REVIEW</div>
+</div>
+<h2 style="font-size:27px;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 10px">Verify your email to begin</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 20px;text-wrap:pretty">Confirm who you are first. Once your email is verified, you can name your account and continue the setup.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+<div>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">FIRST NAME</label>
+<input value="{{ suFirst }}" onChange="{{ onSuFirst }}" placeholder="First name" style="width:100%;box-sizing:border-box;border:1px solid #d9deec;border-radius:9px;padding:13px 14px;font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+</div>
+<div>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">LAST NAME</label>
+<input value="{{ suLast }}" onChange="{{ onSuLast }}" placeholder="Last name" style="width:100%;box-sizing:border-box;border:1px solid #d9deec;border-radius:9px;padding:13px 14px;font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+</div>
+</div>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">EMAIL ADDRESS</label>
+<input type="email" value="{{ suEmail }}" onChange="{{ onSuEmail }}" placeholder="Email address" style="width:100%;box-sizing:border-box;border:1px solid #d9deec;border-radius:9px;padding:13px 14px;font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020;margin-bottom:16px" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:20px">
+<input type="checkbox" checked="{{ suAgreed }}" onChange="{{ onSuAgree }}" style="width:16px;height:16px;margin:2px 0 0;accent-color:#2743b3;flex:none;cursor:pointer">
+<span style="font:400 13px/1.5 'Inter Tight',sans-serif;color:#5a6484">By continuing, you agree to the <a href="#" style="font-weight:600;color:#2743b3">Terms of Service</a> and <a href="#" style="font-weight:600;color:#2743b3">Privacy Notice</a>.</span>
+</label>
+<button onClick="{{ suSendLink }}" disabled="{{ suVerifyDisabled }}" style="{{ suVerifyBtn }}">Continue with email</button>
+<div style="text-align:center;font:400 13.5px 'Inter Tight',sans-serif;color:#5a6484;margin-top:14px">Already have an account? <button onClick="{{ backToEmail }}" style="background:none;border:none;padding:0;font:600 13.5px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer" style-hover="color:#1c3391">Sign in</button></div>
+<div style="display:flex;align-items:center;gap:12px;margin:20px 0 16px"><div style="flex:1;height:1px;background:#e7eaf3"></div><span style="font:500 10.5px 'Inter Tight',sans-serif;letter-spacing:.18em;color:#9aa3bd">OR</span><div style="flex:1;height:1px;background:#e7eaf3"></div></div>
+<button onClick="{{ suSsoGoogle }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid #d9deec;border-radius:9px;padding:12px;font:500 14.5px 'Inter Tight',sans-serif;color:#1b2136;cursor:pointer;margin-bottom:10px" style-hover="background:#f7f9ff;border-color:#c3cbe4">
+<svg width="17" height="17" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2.5 24 .5 14.6.5 6.5 5.9 2.6 13.7l7.8 6.1C12.3 13.8 17.6 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 7.1-10 7.1-17.5z"></path><path fill="#FBBC05" d="M10.4 28.2c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.8-6.1C1 15.9 0 19.8 0 23.5s1 7.6 2.6 10.8l7.8-6.1z"></path><path fill="#34A853" d="M24 47.5c6.2 0 11.5-2 15.4-5.6l-7.5-5.8c-2.1 1.4-4.8 2.2-7.9 2.2-6.4 0-11.7-4.3-13.6-10.1l-7.8 6.1C6.5 42.1 14.6 47.5 24 47.5z"></path></svg>
+Sign up with Google</button>
+<button onClick="{{ suSsoGithub }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid #d9deec;border-radius:9px;padding:12px;font:500 14.5px 'Inter Tight',sans-serif;color:#1b2136;cursor:pointer" style-hover="background:#f7f9ff;border-color:#c3cbe4">
+<svg width="17" height="17" viewBox="0 0 16 16" fill="#1b2136"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 014 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+Sign up with GitHub</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSuSent }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="width:46px;height:46px;border-radius:12px;background:#eef2fd;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2743b3" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="M3.5 7.5l8.5 6 8.5-6"></path><circle cx="18" cy="17.5" r="4.2" fill="#eef2fd"></circle><path d="M16.2 17.6l1.3 1.3 2.4-2.6"></path></svg>
+</div>
+<h2 style="font-size:27px;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 10px">Check your email</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 4px">We sent a sign-in link to <span style="color:#0d1020;font-weight:600">{{ suEmail }}</span>.</p>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 20px">Open the link in the email to verify your address and continue.</p>
+<button onClick="{{ suVerifyNow }}" style="width:100%;background:#2743b3;border:none;border-radius:9px;padding:14px;font:600 14.5px 'Inter Tight',sans-serif;color:#fff;cursor:pointer;transition:background .15s ease" style-hover="background:#1f379a">Simulate email verification</button>
+<button onClick="{{ suBackToVerify }}" style="width:100%;margin-top:10px;background:#fff;border:1px solid #d9deec;border-radius:9px;padding:13px;font:500 14px 'Inter Tight',sans-serif;color:#1b2136;cursor:pointer" style-hover="background:#f7f9ff;border-color:#c3cbe4">Use a different email</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSuAccount }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="display:flex;gap:10px;margin-bottom:22px">
+<div style="{{ suTab1 }}">ACCOUNT</div>
+<div style="{{ suTab2 }}">PREFERENCES</div>
+<div style="{{ suTab3 }}">REVIEW</div>
+</div>
+<h2 style="font-size:27px;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 10px">Set up your account</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 16px;text-wrap:pretty">Create the account details that will identify your account in DIGIT Complaint Management.</p>
+<sc-if value="{{ suAuthed }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:10px;background:#e9f6ef;border:1px solid #cfe8dc;border-radius:9px;padding:11px 12px;margin-bottom:20px">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2f7a55" stroke-width="2.2" style="flex:none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+<span style="font:500 13.5px/1.45 'Inter Tight',sans-serif;color:#235c40;min-width:0">Authenticated with {{ suAuthProvider }} as <span style="font-weight:600">{{ suEmail }}</span></span>
+</div>
+</sc-if>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+<div>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">FIRST NAME</label>
+<input value="{{ suFirst }}" onChange="{{ onSuFirst }}" placeholder="First name" style="width:100%;box-sizing:border-box;border:1px solid #d9deec;border-radius:9px;padding:13px 14px;font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+</div>
+<div>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">LAST NAME</label>
+<input value="{{ suLast }}" onChange="{{ onSuLast }}" placeholder="Last name" style="width:100%;box-sizing:border-box;border:1px solid #d9deec;border-radius:9px;padding:13px 14px;font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+</div>
+</div>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">EMAIL ADDRESS</label>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f5f7fd;border:1px solid #e3e8f5;border-radius:9px;padding:13px 14px;margin-bottom:16px">
+<span style="font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ suEmail }}</span>
+<span style="display:flex;align-items:center;gap:5px;flex:none;font:600 12.5px 'Inter Tight',sans-serif;color:#2f7a55">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2f7a55" stroke-width="2.2"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 12.3l2.4 2.4 4.6-5"></path></svg>
+Verified</span>
+</div>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">ACCOUNT NAME</label>
+<input value="{{ suAcctName }}" onChange="{{ onSuAcctName }}" placeholder="Makueni County Government" style="width:100%;box-sizing:border-box;border:1px solid #d9deec;border-radius:9px;padding:13px 14px;font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#8a92ac;margin:7px 0 16px;text-wrap:pretty">Enter the name of your account — it could be a government organisation, agency, department, parastatal body, institution, or programme.</p>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">ACCOUNT CODE</label>
+<input value="{{ suAcctCode }}" onChange="{{ onSuAcctCode }}" placeholder="KE-MCG" style="width:100%;box-sizing:border-box;border:1px solid #d9deec;border-radius:9px;padding:13px 14px;font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020;letter-spacing:.04em" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#8a92ac;margin:7px 0 16px">Used as a short identifier for your account across configuration, URLs, and system references.</p>
+<div style="display:flex;gap:10px;align-items:flex-start;background:#eef7f1;border:1px solid #cce5d8;border-radius:9px;padding:12px 13px;margin-bottom:18px">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2f7a55" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 12.3l2.4 2.4 4.6-5"></path></svg>
+<span style="min-width:0">
+<span style="display:block;font:600 13.5px 'Inter Tight',sans-serif;color:#1f5c3f">Authentication successful</span>
+<span style="display:block;font:400 13px 'Inter Tight',sans-serif;color:#3d7a5c;margin-top:2px">Your identity has been verified.</span>
+</span>
+</div>
+<button onClick="{{ suToPrefs }}" disabled="{{ suAcctDisabled }}" style="{{ suAcctBtn }}">Continue</button>
+<div style="text-align:center;font:400 13.5px 'Inter Tight',sans-serif;color:#5a6484;margin-top:14px">Already have an account? <button onClick="{{ backToEmail }}" style="background:none;border:none;padding:0;font:600 13.5px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer" style-hover="color:#1c3391">Sign in</button></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSuPrefs }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="display:flex;gap:10px;margin-bottom:22px">
+<div style="{{ suTab1 }}">ACCOUNT</div>
+<div style="{{ suTab2 }}">PREFERENCES</div>
+<div style="{{ suTab3 }}">REVIEW</div>
+</div>
+<h2 style="font-size:27px;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 10px">Personalise your account</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 20px">Set the defaults your account will use across the product.</p>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">BASE COUNTRY OF OPERATIONS</label>
+<select value="{{ suCountry }}" onChange="{{ onSuCountry }}" style="{{ selectFieldStyle }}" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<option value="">Select a country</option>
+<sc-for list="{{ countries }}" as="c" hint-placeholder-count="4">
+<option value="{{ c.value }}">{{ c.label }}</option>
+</sc-for>
+</select>
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#8a92ac;margin:7px 0 16px">Used to suggest locale, timezone, and account URL defaults.</p>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">LANGUAGES</label>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ languages }}" as="lg" hint-placeholder-count="4">
+<button onClick="{{ lg.toggle }}" style="{{ lg.style }}">{{ lg.label }}</button>
+</sc-for>
+</div>
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#8a92ac;margin:9px 0 16px">Choose the languages your account may use in the product.</p>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">TIMEZONE</label>
+<select value="{{ suTz }}" onChange="{{ onSuTz }}" style="{{ selectFieldStyle }}" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<option value="">Select a timezone</option>
+<sc-for list="{{ timezones }}" as="tz" hint-placeholder-count="3">
+<option value="{{ tz.value }}">{{ tz.label }}</option>
+</sc-for>
+</select>
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#8a92ac;margin:7px 0 16px">Suggested from your base country. You can change it if required.</p>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">FINANCIAL YEAR</label>
+<select value="{{ suFy }}" onChange="{{ onSuFy }}" style="{{ selectFieldStyle }}" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<sc-for list="{{ fyOptions }}" as="fy" hint-placeholder-count="3">
+<option value="{{ fy.value }}">{{ fy.label }}</option>
+</sc-for>
+</select>
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#8a92ac;margin:7px 0 16px">Choose when your account's financial year begins.</p>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">ACCOUNT URL</label>
+<input value="{{ suUrl }}" onChange="{{ onSuUrl }}" placeholder="makueni" style="width:100%;box-sizing:border-box;border:1px solid #d9deec;border-radius:9px;padding:13px 14px;font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#8a92ac;margin:7px 0 6px">This short name will be used in your account URLs.</p>
+<sc-if value="{{ suHasUrl }}" hint-placeholder-val="{{ false }}">
+<div>
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#5a6484;margin:0 0 4px">Preview: <span style="font-weight:600;color:#0d1020">{{ suUrlPreview }}</span></p>
+<p style="display:flex;align-items:center;gap:6px;font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#2f7a55;margin:0">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2f7a55" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+This account URL is available.</p>
+</div>
+</sc-if>
+<div style="display:flex;gap:10px;margin-top:20px">
+<button onClick="{{ suBackToAccount }}" style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #d9deec;border-radius:9px;padding:13px 18px;font:500 14px 'Inter Tight',sans-serif;color:#1b2136;cursor:pointer;flex:none" style-hover="background:#f7f9ff;border-color:#c3cbe4">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+Back</button>
+<button onClick="{{ suSubmit }}" disabled="{{ suPrefsDisabled }}" style="{{ suPrefsBtn }}">Continue</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSuLoading }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both;padding:16px 0 8px;text-align:center">
+<div style="width:52px;height:52px;margin:0 auto 20px;border-radius:14px;border:1px solid #e3e8f5;background:#f7f9ff;display:flex;align-items:center;justify-content:center;position:relative">
+<div style="position:absolute;inset:-6px;border-radius:18px;border:2px solid #e3e8f5;border-top-color:#2743b3;animation:dcSpin 1s linear infinite"></div>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2743b3" stroke-width="1.9"><path d="M12 4v7l4 2"></path><circle cx="12" cy="12" r="8.5"></circle></svg>
+</div>
+<div style="font:600 11.5px 'Inter Tight',sans-serif;letter-spacing:.14em;color:#3b55b8;margin-bottom:8px">PLEASE WAIT</div>
+<h2 style="font-size:24px;font-weight:700;letter-spacing:-.03em;color:#0d1020;margin:0 0 10px">Initiating account creation</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 auto 22px;max-width:290px;text-wrap:pretty">We're registering <span style="color:#0d1020;font-weight:600">{{ suAcctName }}</span> and reserving your account URL.</p>
+<div style="height:3px;border-radius:2px;background:#eef1f9;overflow:hidden"><div style="width:32%;height:100%;border-radius:2px;background:#2743b3;animation:dcBar 1.2s ease-in-out infinite"></div></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSuReview }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="display:flex;gap:10px;margin-bottom:22px">
+<div style="{{ suTab1 }}">ACCOUNT</div>
+<div style="{{ suTab2 }}">PREFERENCES</div>
+<div style="{{ suTab3 }}">REVIEW</div>
+</div>
+<h2 style="font-size:27px;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 10px">Account creation initiated</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 18px;text-wrap:pretty">Your account details have been submitted and workspace setup is now in progress.</p>
+<div style="display:flex;gap:10px;align-items:flex-start;background:#eef2fd;border:1px solid #d3ddf8;border-radius:10px;padding:13px 14px;margin-bottom:22px">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2743b3" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5V12l3 1.8"></path></svg>
+<span style="min-width:0">
+<span style="display:block;font:600 13.5px 'Inter Tight',sans-serif;color:#1b3a86">Workspace setup in progress</span>
+<span style="display:block;font:400 13px/1.5 'Inter Tight',sans-serif;color:#42588f;margin-top:2px;text-wrap:pretty">Setup usually takes 10 to 15 minutes. We will inform you by email when it is done.</span>
+</span>
+</div>
+<div style="font:600 14px 'Inter Tight',sans-serif;color:#0d1020;margin-bottom:10px">Account details</div>
+<div style="margin-bottom:20px">
+<sc-for list="{{ suSummary }}" as="row" hint-placeholder-count="6">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:6px 0">
+<span style="font:400 13.5px 'Inter Tight',sans-serif;color:#8a92ac">{{ row.label }}</span>
+<span style="font:500 13.5px 'Inter Tight',sans-serif;color:#0d1020;text-align:right">{{ row.value }}</span>
+</div>
+</sc-for>
+</div>
+<div style="border:1px solid #e6eaf4;border-radius:11px;padding:14px;margin-bottom:10px">
+<div style="font:600 13.5px 'Inter Tight',sans-serif;color:#0d1020">Primary URL</div>
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#8a92ac;margin:4px 0 10px;text-wrap:pretty">Main entry point for administrators to setup your account.</p>
+<div style="display:flex;align-items:center;gap:8px">
+<code style="flex:1;min-width:0;background:#f5f7fd;border:1px solid #e3e8f5;border-radius:8px;padding:9px 11px;font:500 12.5px 'SF Mono',ui-monospace,monospace;color:#2743b3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ suPrimaryUrl }}</code>
+<button onClick="{{ suCopy }}" title="Copy URL" style="flex:none;width:36px;height:36px;display:grid;place-items:center;background:#fff;border:1px solid #d9deec;border-radius:8px;cursor:pointer;color:#5a6484" style-hover="background:#f7f9ff;border-color:#c3cbe4">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M15 5.5A2.5 2.5 0 0012.5 3H6a2.5 2.5 0 00-2.5 2.5V12"></path></svg>
+</button>
+</div>
+</div>
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#8a92ac;margin:0 0 18px;text-wrap:pretty">This URL is representative. Working URLs will be available post provisioning of your workspace.</p>
+<div style="display:flex;gap:10px">
+<button onClick="{{ noop }}" style="flex:1;background:#2743b3;border:none;border-radius:9px;padding:13px;font:600 14px 'Inter Tight',sans-serif;color:#fff;cursor:pointer;transition:background .15s ease" style-hover="background:#1f379a">Read more</button>
+<a href="https://docs.digit.org/complaints-management" target="_blank" rel="noopener" style="flex:1;box-sizing:border-box;text-align:center;background:#fff;border:1px solid #d9deec;border-radius:9px;padding:13px;font:500 14px 'Inter Tight',sans-serif;color:#1b2136" style-hover="background:#f7f9ff;border-color:#c3cbe4;color:#1b2136">Documentation and FAQs</a>
+</div>
+<div style="text-align:center;margin-top:14px">
+<button onClick="{{ backToEmail }}" style="background:none;border:none;padding:6px 10px;font:500 13.5px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer;text-decoration:underline" style-hover="color:#1c3391">Go to sign in</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSsoStep }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="display:flex;align-items:center;gap:10px;padding-bottom:16px;border-bottom:1px solid #edf0f8;margin-bottom:18px">
+<span style="{{ providerMarkStyle }}">{{ providerMark }}</span>
+<div style="min-width:0">
+<div style="font:600 14.5px 'Inter Tight',sans-serif;color:#0d1020">Sign in with {{ providerName }}</div>
+<div style="font:400 12.5px 'Inter Tight',sans-serif;color:#8a92ac">accounts.{{ providerDomain }} · mock</div>
+</div>
+</div>
+<h2 style="font-size:24px;font-weight:700;letter-spacing:-.03em;color:#0d1020;margin:0 0 6px">Choose an account</h2>
+<p style="font:400 13.5px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 18px">to continue to DIGIT Complaint Management</p>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">EMAIL</label>
+<input type="email" value="{{ ssoEmail }}" onChange="{{ onSsoEmail }}" onKeyDown="{{ onSsoKey }}" placeholder="name@organisation.org" style="{{ ssoInputStyle }}" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<sc-if value="{{ ssoHasError }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:9px;align-items:flex-start;background:#fbf7ef;border:1px solid #ece0c9;border-radius:9px;padding:11px 12px;margin-top:12px;animation:dcFade .2s ease both">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a8792b" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4.5M12 16h.01"></path></svg>
+<div style="font:500 13.5px/1.45 'Inter Tight',sans-serif;color:#6c5322;text-wrap:pretty">{{ ssoErrorText }}</div>
+</div>
+</sc-if>
+<button onClick="{{ submitSso }}" disabled="{{ ssoDisabled }}" style="{{ ssoContinueStyle }}">Continue</button>
+<div style="text-align:center;margin-top:12px">
+<button onClick="{{ ssoBack }}" style="background:transparent;border:none;border-radius:8px;padding:8px 14px;font:500 13.5px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer;transition:background .15s ease,box-shadow .15s ease" style-hover="background:rgba(39,67,179,.08);box-shadow:0 1px 3px rgba(39,67,179,.18)" style-active="background:rgba(39,67,179,.14)">{{ ssoBackLabel }}</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isForgotStep }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="font:600 11.5px 'Inter Tight',sans-serif;letter-spacing:.14em;color:#3b55b8;margin-bottom:8px">PASSWORD RESET</div>
+<h2 style="font-size:27px;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 10px">Reset your password</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 20px;text-wrap:pretty">Enter the email registered with your organisation and we'll check how your account is set up.</p>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">ADMINISTRATOR EMAIL</label>
+<input type="email" value="{{ forgotEmail }}" onChange="{{ onForgotEmail }}" onKeyDown="{{ onForgotKey }}" placeholder="name@organisation.org" style="{{ forgotInputStyle }}" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<sc-if value="{{ forgotHasNotice }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:9px;align-items:flex-start;background:#fbf7ef;border:1px solid #ece0c9;border-radius:9px;padding:11px 12px;margin-top:12px;animation:dcFade .2s ease both">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a8792b" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4.5M12 16h.01"></path></svg>
+<div style="min-width:0">
+<div style="font:500 13.5px/1.45 'Inter Tight',sans-serif;color:#6c5322;text-wrap:pretty">{{ forgotNoticeText }}</div>
+<sc-if value="{{ forgotHasAction }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ forgotAction }}" style="margin-top:8px;background:transparent;border:1px solid #2743b3;border-radius:8px;padding:7px 12px;font:500 13px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer;transition:background .15s ease,box-shadow .15s ease" style-hover="background:rgba(39,67,179,.08);box-shadow:0 1px 3px rgba(39,67,179,.18)" style-active="background:rgba(39,67,179,.14)">{{ forgotActionLabel }}</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+<button onClick="{{ submitForgot }}" disabled="{{ forgotDisabled }}" style="{{ forgotContinueStyle }}">Continue</button>
+<div style="text-align:center;margin-top:12px">
+<button onClick="{{ backToEmail }}" style="background:transparent;border:none;border-radius:8px;padding:8px 14px;font:500 13.5px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer;transition:background .15s ease,box-shadow .15s ease" style-hover="background:rgba(39,67,179,.08);box-shadow:0 1px 3px rgba(39,67,179,.18)" style-active="background:rgba(39,67,179,.14)">Back to sign in</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSentStep }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="width:46px;height:46px;border-radius:12px;background:#eef2fd;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2743b3" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="M3.5 7.5l8.5 6 8.5-6"></path></svg>
+</div>
+<div style="font:600 11.5px 'Inter Tight',sans-serif;letter-spacing:.14em;color:#3b55b8;margin-bottom:8px">CHECK YOUR INBOX</div>
+<h2 style="font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 10px">Reset link sent</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 6px;text-wrap:pretty">We sent a password reset link to <span style="color:#0d1020;font-weight:500">{{ forgotEmail }}</span>. The link expires in 30 minutes.</p>
+<p style="font:400 12.5px/1.5 'Inter Tight',sans-serif;color:#9aa3bd;margin:0 0 18px">Mockup shortcut — use the button below in place of the emailed link.</p>
+<button onClick="{{ openResetLink }}" style="width:100%;background:#2743b3;border:none;border-radius:9px;padding:14px;font:600 14.5px 'Inter Tight',sans-serif;color:#fff;cursor:pointer;transition:background .15s ease" style-hover="background:#1f379a">Open reset link</button>
+<div style="text-align:center;margin-top:12px">
+<button onClick="{{ backToEmail }}" style="background:transparent;border:none;border-radius:8px;padding:8px 14px;font:500 13.5px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer;transition:background .15s ease,box-shadow .15s ease" style-hover="background:rgba(39,67,179,.08);box-shadow:0 1px 3px rgba(39,67,179,.18)" style-active="background:rgba(39,67,179,.14)">Back to sign in</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isNewPasswordStep }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="font:600 11.5px 'Inter Tight',sans-serif;letter-spacing:.14em;color:#3b55b8;margin-bottom:8px">{{ newPwEyebrow }}</div>
+<h2 style="font-size:27px;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 10px">Create a new password</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 20px;text-wrap:pretty">Setting a password for <span style="color:#0d1020;font-weight:500">{{ forgotEmail }}</span>. Use at least 8 characters.</p>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">NEW PASSWORD</label>
+<input type="password" value="{{ pw1 }}" onChange="{{ onPw1 }}" placeholder="Enter a new password" style="{{ pw1Style }}" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">CONFIRM PASSWORD</label>
+<input type="password" value="{{ pw2 }}" onChange="{{ onPw2 }}" onKeyDown="{{ onPwKey }}" placeholder="Confirm the new password" style="{{ pw2Style }}" style-focus="border-color:#2743b3;box-shadow:0 0 0 3px rgba(39,67,179,.12)">
+<sc-if value="{{ pwHasNotice }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:9px;align-items:flex-start;background:#fbf7ef;border:1px solid #ece0c9;border-radius:9px;padding:11px 12px;margin-top:12px;animation:dcFade .2s ease both">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a8792b" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4.5M12 16h.01"></path></svg>
+<div style="font:500 13.5px/1.45 'Inter Tight',sans-serif;color:#6c5322;text-wrap:pretty">{{ pwNoticeText }}</div>
+</div>
+</sc-if>
+<button onClick="{{ submitNewPassword }}" disabled="{{ pwDisabled }}" style="{{ pwContinueStyle }}">Save password and continue</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isVerifying }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both;padding:14px 0 6px;text-align:center">
+<div style="width:52px;height:52px;margin:0 auto 20px;border-radius:14px;border:1px solid #e3e8f5;background:#f7f9ff;display:flex;align-items:center;justify-content:center;position:relative">
+<div style="position:absolute;inset:-6px;border-radius:18px;border:2px solid #e3e8f5;border-top-color:#2743b3;animation:dcSpin 1s linear infinite"></div>
+<span style="font:700 13px 'Inter Tight',sans-serif;color:#2743b3">SSO</span>
+</div>
+<div style="font:600 11.5px 'Inter Tight',sans-serif;letter-spacing:.14em;color:#3b55b8;margin-bottom:8px">VERIFYING</div>
+<h2 style="font-size:24px;font-weight:700;letter-spacing:-.03em;color:#0d1020;margin:0 0 10px">{{ verifyTitle }}</h2>
+<p style="font:400 14px/1.55 'Inter Tight',sans-serif;color:#6b7492;margin:0 auto 22px;max-width:290px;text-wrap:pretty">{{ verifyBody }}</p>
+<div style="height:3px;border-radius:2px;background:#eef1f9;overflow:hidden"><div style="width:32%;height:100%;border-radius:2px;background:#2743b3;animation:dcBar 1.2s ease-in-out infinite"></div></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAccountStep }}" hint-placeholder-val="{{ false }}">
+<div style="animation:dcFade .25s ease both">
+<div style="font:600 11.5px 'Inter Tight',sans-serif;letter-spacing:.14em;color:#3b55b8;margin-bottom:8px">{{ accountEyebrow }}</div>
+<h2 style="font-size:30px;font-weight:700;letter-spacing:-.035em;color:#0d1020;margin:0 0 22px">Select your account</h2>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">SIGNED IN AS</label>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f5f7fd;border:1px solid #e3e8f5;border-radius:9px;padding:13px 14px;margin-bottom:18px">
+<span style="font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ activeEmail }}</span>
+<button onClick="{{ backToEmail }}" style="background:transparent;border:none;border-radius:8px;padding:6px 10px;font:600 13.5px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer;flex:none;transition:background .15s ease,box-shadow .15s ease" style-hover="background:rgba(39,67,179,.08);box-shadow:0 1px 3px rgba(39,67,179,.18)" style-active="background:rgba(39,67,179,.14)">Change</button>
+</div>
+<label style="display:block;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.12em;color:#5a6484;margin-bottom:8px">ACCOUNT</label>
+<div style="position:relative">
+<button onClick="{{ toggleList }}" style="{{ selectStyle }}">
+<span style="{{ selectTextStyle }}">{{ accountLabel }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5a6484" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+<sc-if value="{{ listOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1px solid #dfe4f2;border-radius:10px;box-shadow:0 14px 34px rgba(20,34,84,.14);padding:5px;z-index:20;animation:dcFade .14s ease both">
+<sc-for list="{{ accounts }}" as="acct" hint-placeholder-count="3">
+<button onClick="{{ acct.select }}" style="{{ acct.rowStyle }}">
+<span style="width:30px;height:30px;flex:none;border-radius:7px;background:#e8edfc;color:#2743b3;display:flex;align-items:center;justify-content:center;font:700 11.5px 'Inter Tight',sans-serif">{{ acct.initials }}</span>
+<span style="min-width:0;text-align:left">
+<span style="display:block;font:500 14px 'Inter Tight',sans-serif;color:#0d1020;line-height:1.25">{{ acct.name }}</span>
+<span style="display:block;font:400 12px 'Inter Tight',sans-serif;color:#7b849f;margin-top:2px">{{ acct.role }}</span>
+</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+</div>
+<div style="font:400 13px 'Inter Tight',sans-serif;color:#7b849f;margin-top:8px">Choose the account you want to access.</div>
+<button onClick="{{ goWorkspace }}" disabled="{{ workspaceDisabled }}" style="{{ workspaceStyle }}">Go to workspace</button>
+</div>
+</sc-if>
+
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;border-top:1px solid #edf0f8;margin-top:20px;padding-top:16px">
+<span style="font:400 12.5px 'Inter Tight',sans-serif;color:#9aa3bd">Powered by</span>
+<span style="display:flex;align-items:center;gap:5px">
+<span style="display:grid;grid-template-columns:repeat(2,4px);gap:2px">
+<span style="width:4px;height:4px;border-radius:1px;background:#f5a623"></span><span style="width:4px;height:4px;border-radius:1px;background:#3b55b8"></span><span style="width:4px;height:4px;border-radius:1px;background:#4caf7d"></span><span style="width:4px;height:4px;border-radius:1px;background:#e0574a"></span>
+</span>
+<span style="font:700 17px 'Inter Tight',sans-serif;letter-spacing:.06em;color:#6a7288">DIGIT</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStudioView }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;min-height:100vh;background:#f4f7ff">
+<div style="flex:0 0 236px;background:#101b3d;color:#fff;display:flex;flex-direction:column;padding:22px 16px;gap:22px">
+<div style="display:flex;align-items:center;gap:10px;padding:0 6px">
+<span style="width:30px;height:30px;border-radius:8px;background:#2743b3;display:flex;align-items:center;justify-content:center;font:700 12px 'Inter Tight',sans-serif">eG</span>
+<span style="font:600 14px/1.25 'Inter Tight',sans-serif">DIGIT Complaint<br>Management</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px">
+<sc-for list="{{ studioNav }}" as="item" hint-placeholder-count="6">
+<div style="{{ item.style }}">{{ item.label }}</div>
+</sc-for>
+</div>
+<a href="{{ onboardingUrl }}" style="margin-top:auto;display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 12px;color:#fff;transition:background .15s ease" style-hover="background:rgba(255,255,255,.1);color:#fff">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex:none"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+<span style="min-width:0;flex:1;font:600 12.5px 'Inter Tight',sans-serif">Switch to Onboarding Console</span>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2" style="flex:none"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+</a>
+<div style="margin-top:16px;display:flex;align-items:center;gap:10px;border-top:1px solid rgba(255,255,255,.12);padding-top:16px">
+<span style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font:600 12px 'Inter Tight',sans-serif">AD</span>
+<span style="min-width:0">
+<span style="display:block;font:500 13px 'Inter Tight',sans-serif">Admin</span>
+<span style="display:block;font:400 11.5px 'Inter Tight',sans-serif;color:rgba(255,255,255,.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ activeEmail }}</span>
+</span>
+</div>
+</div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;background:#fff;border-bottom:1px solid #e6eaf4;padding:14px 28px">
+<div style="display:flex;align-items:center;gap:10px">
+<span style="background:#eef2fd;color:#2743b3;border-radius:6px;padding:5px 10px;font:600 12px 'Inter Tight',sans-serif;letter-spacing:.04em">MANAGEMENT MODE</span>
+<span style="border:1px solid #e3e8f5;color:#5a6484;border-radius:6px;padding:5px 10px;font:500 12px 'Inter Tight',sans-serif">{{ brandName }}</span>
+</div>
+<div style="display:flex;align-items:center;gap:10px">
+<span style="border:1px solid #e3e8f5;border-radius:6px;padding:6px 10px;font:500 12.5px 'Inter Tight',sans-serif;color:#26304a">EN</span>
+<button onClick="{{ signOut }}" style="background:transparent;border:none;border-radius:8px;padding:6px 12px;font:500 13px 'Inter Tight',sans-serif;color:#2743b3;cursor:pointer;transition:background .15s ease,box-shadow .15s ease" style-hover="background:rgba(39,67,179,.08);box-shadow:0 1px 3px rgba(39,67,179,.18)" style-active="background:rgba(39,67,179,.14)">Sign out</button>
+</div>
+</div>
+<div style="flex:1;padding:30px 28px 24px">
+<h1 style="font-size:28px;font-weight:700;letter-spacing:-.03em;color:#0d1020;margin:0 0 4px">DIGIT Management Studio</h1>
+<p style="font:400 14px 'Inter Tight',sans-serif;color:#6b7492;margin:0 0 24px">Everything configured for {{ brandName }}.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+<sc-for list="{{ studioStats }}" as="stat" hint-placeholder-count="10">
+<div style="background:#fff;border:1px solid #e6eaf4;border-radius:12px;padding:18px 18px 16px;box-shadow:0 1px 2px rgba(20,30,70,.04)">
+<div style="width:32px;height:32px;border-radius:8px;background:#eef2fd;margin-bottom:12px"></div>
+<div style="font:700 26px 'Inter Tight',sans-serif;letter-spacing:-.03em;color:#0d1020">{{ stat.value }}</div>
+<div style="font:400 13px 'Inter Tight',sans-serif;color:#6b7492;margin-top:2px">{{ stat.label }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;border-top:1px solid #e6eaf4;background:#fff;padding:14px">
+<span style="font:400 12.5px 'Inter Tight',sans-serif;color:#9aa3bd">Powered by</span>
+<span style="font:700 17px 'Inter Tight',sans-serif;letter-spacing:.06em;color:#6a7288">DIGIT</span>
+</div>
+</div>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1340,&quot;height&quot;:930},&quot;ssoFirst&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sign-in order&quot;},&quot;ssoProviders&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Google + GitHub&quot;,&quot;Google only&quot;,&quot;GitHub only&quot;],&quot;default&quot;:&quot;Google + GitHub&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sign-in order&quot;},&quot;showLanguagePicker&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sign-in order&quot;}}">
+const ACCOUNTS = {
+  eth: { id: "eth", name: "eThekwini Metropolitan Municipality, South Africa", role: "Grievance Administrator", initials: "ET" },
+  amd: { id: "amd", name: "Amdavad Municipal Corporation, India", role: "Service Desk Supervisor", initials: "AM" },
+  ngo: { id: "ngo", name: "Urban Services Trust (Partner)", role: "Read-only observer", initials: "UT" },
+  kis: { id: "kis", name: "Kisumu County Government, Kenya", role: "Onboarding Administrator", initials: "KC" }
+};
+
+const ACCOUNT_DETAILS = {
+  eth: { "Account name": "eThekwini", "Account code": "ZA-ETH", "Base country": "South Africa", "Languages": "English, isiZulu", "Timezone": "Africa/Johannesburg", "Financial year": "July to June" },
+  amd: { "Account name": "GBA", "Account code": "IN-GBA", "Base country": "India", "Languages": "English, Hindi", "Timezone": "Asia/Kolkata", "Financial year": "January to December" },
+  ngo: { "Account name": "Urban Services Trust", "Account code": "IN-UST", "Base country": "India", "Languages": "English", "Timezone": "Asia/Kolkata", "Financial year": "April to March" },
+  kis: { "Account name": "Kisumu County", "Account code": "KE-KSM", "Base country": "Kenya", "Languages": "English, Swahili", "Timezone": "Africa/Nairobi", "Financial year": "July to June" }
+};
+
+const HUB_TASKS = [
+  { id: "area", label: "Operational area", desc: "Wards and localities complaints are routed against." },
+  { id: "channels", label: "Notification channels", desc: "SMS, email and in-app updates for citizens." },
+  { id: "depts", label: "Departments", desc: "Teams that receive and act on complaints." },
+  { id: "systems", label: "Complaint systems", desc: "Categories, SLAs and escalation rules." },
+  { id: "people", label: "Employees and roles", desc: "Invite staff and assign access roles." },
+  { id: "templates", label: "Service templates", desc: "Citizen-facing forms and published services." }
+];
+
+const ACCENTS = [
+  { id: "navy", hex: "#16224d" }, { id: "blue", hex: "#2743b3" },
+  { id: "teal", hex: "#1f7a8c" }, { id: "amber", hex: "#b7791f" }
+];
+
+const STUDIO_NAV = ["Dashboard", "Public dashboard", "Tenant management", "Complaint management", "People", "System", "Advanced"];
+const STUDIO_STATS = [
+  { value: "59", label: "Tenants" }, { value: "42", label: "Departments" },
+  { value: "50", label: "Designations" }, { value: "1103", label: "Complaint types" },
+  { value: "500", label: "Employees" }, { value: "31", label: "Boundaries" },
+  { value: "4115", label: "Complaints" }, { value: "17120", label: "Localisation messages" },
+  { value: "100", label: "Users" }, { value: "27", label: "Access roles" }
+];
+
+// email is the primary key; methods list the configured auth providers
+const DIRECTORY = {
+  "anita.rao@ethekwini.gov.za":  { methods: ["password", "google"], accounts: ["eth", "ngo"], onboarding: "done" },
+  "j.mkhize@amc.gov.in":         { methods: ["google"],             accounts: ["amd"],        onboarding: "done" },
+  "d.patel@ustrust.org":         { methods: ["github"],             accounts: ["ngo", "amd"], onboarding: "done" },
+  "s.naidoo@ethekwini.gov.za":   { methods: [],                     accounts: [],             onboarding: "new" },
+  "new.admin@kisumu.go.ke":      { methods: ["password", "google"], accounts: ["kis"],        onboarding: "new" },
+  "p.otieno@kisumu.go.ke":       { methods: ["password"],           accounts: ["kis"],        onboarding: "progress" },
+  "r.desai@amc.gov.in":          { methods: ["password", "github"], accounts: ["amd"],        onboarding: "done" }
+};
+
+const LANGUAGES = ["English", "French", "Portuguese", "Hindi"];
+const FY_OPTIONS = ["January to December", "April to March", "July to June", "October to September"];
+const COUNTRIES = [
+  { name: "Kenya", zones: ["Africa/Nairobi"], fy: "July to June" },
+  { name: "Nigeria", zones: ["Africa/Lagos"], fy: "January to December" },
+  { name: "South Africa", zones: ["Africa/Johannesburg"], fy: "July to June" },
+  { name: "Mozambique", zones: ["Africa/Maputo"], fy: "January to December" },
+  { name: "India", zones: ["Asia/Kolkata"], fy: "April to March" }
+];
+const ALL_ZONES = ["Africa/Nairobi", "Africa/Lagos", "Africa/Johannesburg", "Africa/Maputo", "Asia/Kolkata"];
+
+const INPUT = "width:100%;box-sizing:border-box;border-radius:9px;padding:13px 14px;font:400 14.5px 'Inter Tight',sans-serif;color:#0d1020;background:#fff;";
+const BTN = "width:100%;margin-top:16px;border:none;border-radius:9px;padding:14px;font:600 14.5px 'Inter Tight',sans-serif;color:#fff;transition:background .15s ease;";
+
+class Component extends DCLogic {
+  state = { step: "email", email: "", password: "", error: null, provider: null, ssoEmail: "", ssoError: null, listOpen: false, selected: null,
+    forgotEmail: "", forgotNotice: null, forgotAction: null, forgotActionLabel: "", resetVia: "email", pw1: "", pw2: "", pwNotice: null, afterVerify: "accounts",
+    orgName: "", orgCountry: "", orgArea: "", orgTz: "", orgSupport: "", brandName: "", accent: "blue", done: [],
+    suFirst: "", suLast: "", suEmail: "", suAgreed: false, suAcctName: "", suAcctCode: "",
+    suCountry: "", suLangs: ["English"], suTz: "", suFy: "January to December", suUrl: "" };
+
+  goWorkspace() {
+    const rec = this.lookup(this.state.email) || {};
+    const acct = this.state.selected ? ACCOUNTS[this.state.selected] : null;
+    const orgName = acct ? acct.name.split(",")[0] : "";
+    if (rec.onboarding === "done") {
+      return this.set({ step: "studio", orgName, brandName: orgName });
+    }
+    /* onboarding not finished: straight into the onboarding console */
+    location.href = "onboarding/index.html?org=" + encodeURIComponent(orgName)
+      + "&acct=" + encodeURIComponent(this.state.selected || "")
+      + "&email=" + encodeURIComponent(this.state.email || "")
+      + (rec.onboarding === "progress" ? "&progress=1" : "&fresh=1");
+  }
+
+  set(p) { this.setState(p); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  componentDidMount() {
+    const q = new URLSearchParams(location.search);
+    const resume = q.get("resume");
+    if (resume !== "studio") return;
+    const acct = q.get("acct");
+    const email = q.get("email") || "";
+    const name = q.get("org") || (acct && ACCOUNTS[acct] ? ACCOUNTS[acct].name.split(",")[0] : "");
+    this.set({ step: "studio", selected: acct || null, email, orgName: name, brandName: name });
+  }
+
+  lookup(email) { return DIRECTORY[email.trim().toLowerCase()] || null; }
+  valid(email) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim()); }
+
+  submitEmail() {
+    const { email } = this.state;
+    const rec = this.lookup(email);
+    if (!rec) return this.set({ error: "notfound" });
+    if (!rec.methods.includes("password")) {
+      if (rec.methods.includes("google")) return this.set({ error: "google" });
+      if (rec.methods.includes("github")) return this.set({ error: "github" });
+      return this.set({ error: "notfound" });
+    }
+    this.set({ step: "accounts", error: null, selected: null });
+  }
+
+  submitSso() {
+    const { ssoEmail, provider } = this.state;
+    /* Signing UP: there is no directory record yet, so the provider just
+       proves the address and hands control to account setup. */
+    if (this.state.ssoMode === "signup") {
+      const email = ssoEmail.trim().toLowerCase();
+      this.set({ step: "verifying", ssoError: null, suEmail: email, ssoEmail: email, afterVerify: "su-account" });
+      clearTimeout(this._t);
+      this._t = setTimeout(() => this.set({ step: "su-account", suAuthProvider: provider }), 1400);
+      return;
+    }
+    const rec = this.lookup(ssoEmail);
+    if (!rec) return this.set({ ssoError: "Email ID not found, contact platform administrator for login credentials." });
+    if (!rec.methods.includes(provider)) {
+      const name = provider === "github" ? "GitHub" : "Google";
+      const alt = rec.methods.includes("google") ? "Google SSO" : rec.methods.includes("github") ? "GitHub SSO" : "email and password";
+      return this.set({ ssoError: "This account is not linked to " + name + ". Use " + alt + " instead." });
+    }
+    this.set({ step: "verifying", ssoError: null, email: ssoEmail.trim().toLowerCase(), afterVerify: "accounts" });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.set({ step: "accounts", selected: null }), 1400);
+  }
+
+  submitForgot() {
+    const email = this.state.forgotEmail.trim().toLowerCase();
+    const rec = this.lookup(email);
+    if (!rec || rec.methods.length === 0) {
+      return this.set({
+        forgotNotice: "We couldn't find an account for this email. Contact your platform administrator for login credentials, or create a new account.",
+        forgotActionLabel: "Create an account", forgotAction: () => {}
+      });
+    }
+    if (rec.methods.includes("password")) return this.set({ step: "reset-sent", forgotNotice: null, resetVia: "email" });
+    const provider = rec.methods.includes("google") ? "google" : "github";
+    const name = provider === "github" ? "GitHub" : "Google";
+    this.set({
+      forgotNotice: "This account has no password yet — it was set up with " + name + " SSO. Authenticate with " + name + " to create one.",
+      forgotActionLabel: "Authenticate with " + name,
+      forgotAction: () => this.ssoForReset(provider)
+    });
+  }
+
+  submitNewPassword() {
+    const { pw1, pw2, forgotEmail } = this.state;
+    if (pw1.length < 8) return this.set({ pwNotice: "Use at least 8 characters for your new password." });
+    if (pw1 !== pw2) return this.set({ pwNotice: "Both passwords need to match. Re-enter them and try again." });
+    const email = forgotEmail.trim().toLowerCase();
+    const rec = DIRECTORY[email];
+    if (rec && !rec.methods.includes("password")) rec.methods.push("password");
+    this.set({ step: "accounts", email, password: pw1, selected: null, pwNotice: null, error: null });
+  }
+
+  ssoForReset(provider) {
+    this.set({ step: "verifying", provider, ssoEmail: this.state.forgotEmail.trim().toLowerCase(), resetVia: provider, afterVerify: "new-password" });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.set({ step: "new-password", pw1: "", pw2: "", pwNotice: null }), 1400);
+  }
+
+  submitSignup() {
+    this.set({ step: "su-loading" });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.set({ step: "su-review" }), 1900);
+  }
+
+  openSso(provider, seed, mode) {
+    this.set({ step: "sso", provider, ssoEmail: seed || "", ssoError: null, ssoMode: mode || "signin" });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const emailOk = this.valid(s.email);
+    const ssoOk = this.valid(s.ssoEmail);
+    const rec = this.lookup(s.email);
+    const sel = s.selected ? ACCOUNTS[s.selected] : null;
+    const errors = {
+      notfound: { text: "Email ID not found. Contact your platform administrator for login credentials, or create a new account.", label: "Create an account", action: () => {} },
+      google: { text: "Email login is not configured for this account, use Google SSO.", label: "Continue with Google", action: () => this.openSso("google", s.email) },
+      github: { text: "Email login is not configured for this account, use Github SSO.", label: "Continue with GitHub", action: () => this.openSso("github", s.email) }
+    };
+    const err = s.error ? errors[s.error] : null;
+    const bad = c => INPUT + "border:1px solid " + (c ? "#dfc49b" : "#d9deec") + ";";
+    const provider = s.provider === "github" ? "GitHub" : "Google";
+    const accentHex = (ACCENTS.find(a => a.id === s.accent) || ACCENTS[1]).hex;
+    const ssoFirst = this.props.ssoFirst ?? true;
+    const providers = this.props.ssoProviders ?? "Google + GitHub";
+    const suStage = { "su-verify": 0, "su-sent": 0, "su-account": 0, "su-prefs": 1, "su-loading": 1, "su-review": 2 }[s.step] ?? 0;
+    const suTab = i => "flex:1;min-width:0;border-top:2.5px solid " + (i <= suStage ? "#2743b3" : "#e3e8f5")
+      + ";padding-top:10px;font:600 10.5px 'Inter Tight',sans-serif;letter-spacing:.12em;color:"
+      + (i === suStage ? "#2743b3" : "#9aa3bd");
+    const suUrlSlug = s.suUrl.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const suUrlOk = suUrlSlug.length > 1;
+    const suAcctOk = s.suAcctName.trim().length > 1 && s.suAcctCode.trim().length > 1;
+    const suPrefsOk = !!s.suCountry && !!s.suTz && s.suLangs.length > 0 && suUrlOk;
+    const CHIP = on => "border-radius:999px;padding:9px 16px;font:500 13.5px 'Inter Tight',sans-serif;cursor:pointer;transition:background .15s ease,border-color .15s ease;border:1px solid "
+      + (on ? "#2743b3" : "#d9deec") + ";background:" + (on ? "#eef2fd" : "#fff") + ";color:" + (on ? "#2743b3" : "#5a6484");
+
+    return {
+      verifyTitle: s.ssoMode === "signup"
+        ? "Verifying with " + provider
+        : "Signing in with " + provider,
+      verifyBody: s.ssoMode === "signup"
+        ? "Confirming your identity with " + provider + " so you can set up a new account."
+        : "Looking up the accounts linked to " + s.ssoEmail + ".",
+      isForgotStep: s.step === "forgot", isSentStep: s.step === "reset-sent", isNewPasswordStep: s.step === "new-password",
+      forgotEmail: s.forgotEmail, pw1: s.pw1, pw2: s.pw2,
+      forgotInputStyle: bad(s.forgotNotice) + "margin-bottom:0;",
+      forgotHasNotice: !!s.forgotNotice, forgotNoticeText: s.forgotNotice || "",
+      forgotHasAction: !!s.forgotAction, forgotActionLabel: s.forgotActionLabel,
+      forgotAction: s.forgotAction || (() => {}),
+      forgotDisabled: !this.valid(s.forgotEmail),
+      forgotContinueStyle: BTN + (this.valid(s.forgotEmail) ? "background:#2743b3;cursor:pointer;" : "background:#b3bfe8;cursor:not-allowed;"),
+      onForgotEmail: e => this.set({ forgotEmail: e.target.value, forgotNotice: null, forgotAction: null }),
+      onForgotKey: e => { if (e.key === "Enter" && this.valid(s.forgotEmail)) this.submitForgot(); },
+      submitForgot: () => this.submitForgot(),
+      openForgot: () => this.set({ step: "forgot", forgotEmail: s.email, forgotNotice: null, forgotAction: null }),
+      openResetLink: () => this.set({ step: "new-password", pw1: "", pw2: "", pwNotice: null }),
+      newPwEyebrow: s.resetVia === "email" ? "RESET LINK VERIFIED" : (s.resetVia === "github" ? "GITHUB SSO VERIFIED" : "GOOGLE SSO VERIFIED"),
+      pw1Style: bad(s.pwNotice) + "margin-bottom:16px;",
+      pw2Style: bad(s.pwNotice) + "margin-bottom:0;",
+      pwHasNotice: !!s.pwNotice, pwNoticeText: s.pwNotice || "",
+      pwDisabled: s.pw1.length < 8 || s.pw2.length < 8,
+      pwContinueStyle: BTN + (s.pw1.length >= 8 && s.pw2.length >= 8 ? "background:#2743b3;cursor:pointer;" : "background:#b3bfe8;cursor:not-allowed;"),
+      onPw1: e => this.set({ pw1: e.target.value, pwNotice: null }),
+      onPw2: e => this.set({ pw2: e.target.value, pwNotice: null }),
+      onPwKey: e => { if (e.key === "Enter") this.submitNewPassword(); },
+      submitNewPassword: () => this.submitNewPassword(),
+      emailGroupStyle: "order:" + (ssoFirst ? 3 : 1),
+      ssoGroupStyle: "order:" + (ssoFirst ? 1 : 3),
+      showGoogle: providers !== "GitHub only",
+      showGithub: providers !== "Google only",
+      showLangPicker: this.props.showLanguagePicker ?? true,
+      isSuVerify: s.step === "su-verify", isSuSent: s.step === "su-sent", isSuAccount: s.step === "su-account",
+      isSuPrefs: s.step === "su-prefs", isSuLoading: s.step === "su-loading", isSuReview: s.step === "su-review",
+      suTab1: suTab(0), suTab2: suTab(1), suTab3: suTab(2),
+      suFirst: s.suFirst, suLast: s.suLast, suEmail: s.suEmail, suAgreed: s.suAgreed,
+      suAcctName: s.suAcctName, suAcctCode: s.suAcctCode,
+      suCountry: s.suCountry, suTz: s.suTz, suFy: s.suFy, suUrl: s.suUrl,
+      suHasUrl: suUrlOk,
+      suUrlPreview: "https://" + (suUrlSlug || "your-account") + ".cms.digit.org",
+      suPrimaryUrl: "https://" + (s.suAcctCode.trim().toLowerCase() || "account-code") + "cms-saas.digit.org/configurator",
+      selectFieldStyle: INPUT + "border:1px solid #d9deec;appearance:none;cursor:pointer;background-image:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235a6484' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>\");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;",
+      countries: COUNTRIES.map(c => ({ value: c.name, label: c.name })),
+      timezones: (COUNTRIES.find(c => c.name === s.suCountry) || { zones: ALL_ZONES }).zones.map(z => ({ value: z, label: z })),
+      fyOptions: FY_OPTIONS.map(f => ({ value: f, label: f })),
+      languages: LANGUAGES.map(l => ({
+        label: l,
+        style: CHIP(s.suLangs.includes(l)),
+        toggle: () => this.set({ suLangs: s.suLangs.includes(l) ? s.suLangs.filter(x => x !== l) : s.suLangs.concat([l]) })
+      })),
+      suSummary: [
+        { label: "Account name", value: s.suAcctName || "—" },
+        { label: "Account code", value: s.suAcctCode || "—" },
+        { label: "Base country", value: s.suCountry || "—" },
+        { label: "Languages", value: s.suLangs.join(", ") || "—" },
+        { label: "Timezone", value: s.suTz || "—" },
+        { label: "Financial year", value: s.suFy }
+      ],
+      suVerifyDisabled: !(this.valid(s.suEmail) && s.suAgreed && s.suFirst.trim() && s.suLast.trim()),
+      suVerifyBtn: BTN + "margin-top:0;" + (this.valid(s.suEmail) && s.suAgreed && s.suFirst.trim() && s.suLast.trim()
+        ? "background:#2743b3;cursor:pointer;" : "background:#b3bfe8;cursor:not-allowed;"),
+      suAcctDisabled: !suAcctOk,
+      suAcctBtn: BTN + "margin-top:0;" + (suAcctOk ? "background:#2743b3;cursor:pointer;" : "background:#b3bfe8;cursor:not-allowed;"),
+      suPrefsDisabled: !suPrefsOk,
+      suPrefsBtn: "flex:1;margin:0;border:none;border-radius:9px;padding:13px;font:600 14px 'Inter Tight',sans-serif;color:#fff;transition:background .15s ease;"
+        + (suPrefsOk ? "background:#2743b3;cursor:pointer;" : "background:#b3bfe8;cursor:not-allowed;"),
+      openSignup: () => this.set({ step: "su-verify", suEmail: s.email, suAgreed: false, suAuthProvider: null }),
+      onSuFirst: e => this.set({ suFirst: e.target.value }),
+      onSuLast: e => this.set({ suLast: e.target.value }),
+      onSuEmail: e => this.set({ suEmail: e.target.value }),
+      onSuAgree: e => this.set({ suAgreed: e.target.checked }),
+      onSuAcctName: e => this.set({ suAcctName: e.target.value }),
+      onSuAcctCode: e => this.set({ suAcctCode: e.target.value.toUpperCase() }),
+      onSuCountry: e => {
+        const c = COUNTRIES.find(x => x.name === e.target.value);
+        this.set({ suCountry: e.target.value, suTz: c ? c.zones[0] : "", suFy: c ? c.fy : s.suFy });
+      },
+      onSuTz: e => this.set({ suTz: e.target.value }),
+      onSuFy: e => this.set({ suFy: e.target.value }),
+      onSuUrl: e => this.set({ suUrl: e.target.value }),
+      suSendLink: () => this.set({ step: "su-sent" }),
+      suVerifyNow: () => this.set({ step: "su-account" }),
+      suBackToVerify: () => this.set({ step: "su-verify" }),
+      suToPrefs: () => this.set({ step: "su-prefs", suUrl: s.suUrl || s.suAcctCode.toLowerCase().replace(/[^a-z0-9]+/g, "-") }),
+      suBackToAccount: () => this.set({ step: "su-account" }),
+      suSubmit: () => this.submitSignup(),
+      suSsoGoogle: () => this.openSso("google", s.suEmail, "signup"),
+      suSsoGithub: () => this.openSso("github", s.suEmail, "signup"),
+      suAuthed: !!s.suAuthProvider,
+      suAuthProvider: s.suAuthProvider === "github" ? "GitHub" : "Google",
+      suCopy: () => { try { navigator.clipboard.writeText("https://" + (s.suAcctCode.trim().toLowerCase() || "account-code") + "cms-saas.digit.org/configurator"); } catch (e) {} },
+      isEmailStep: s.step === "email", isSsoStep: s.step === "sso",
+      isVerifying: s.step === "verifying", isAccountStep: s.step === "accounts", isDone: s.step === "done",
+      email: s.email, password: s.password, ssoEmail: s.ssoEmail,
+      activeEmail: s.email,
+      accountEyebrow: s.provider && rec && rec.methods.includes(s.provider) ? provider.toUpperCase() + " SSO VERIFIED" : "SECURE SIGN IN",
+      providerName: provider,
+      providerDomain: s.provider === "github" ? "github.com" : "google.com",
+      providerMark: s.provider === "github" ? "GH" : "G",
+      providerMarkStyle: "width:34px;height:34px;flex:none;border-radius:9px;display:flex;align-items:center;justify-content:center;font:700 13px 'Inter Tight',sans-serif;color:#fff;background:" + (s.provider === "github" ? "#1b2136" : "#4285F4"),
+      emailInputStyle: bad(s.error) + "margin-bottom:16px;",
+      passwordInputStyle: bad(s.error === "wrong"),
+      ssoInputStyle: bad(s.ssoError),
+      hasError: !!err, errorText: err ? err.text : "",
+      errorHasAction: !!(err && err.action), errorActionLabel: err && err.label ? err.label : "",
+      errorAction: err && err.action ? err.action : () => {},
+      ssoHasError: !!s.ssoError, ssoErrorText: s.ssoError || "",
+      submitDisabled: !(emailOk && s.password.length > 0),
+      continueStyle: BTN + (emailOk && s.password.length > 0 ? "background:#2743b3;cursor:pointer;" : "background:#b3bfe8;cursor:not-allowed;"),
+      ssoDisabled: !ssoOk,
+      ssoContinueStyle: BTN + (ssoOk ? "background:#2743b3;cursor:pointer;" : "background:#b3bfe8;cursor:not-allowed;"),
+      listOpen: s.listOpen,
+      workspaceDisabled: !sel,
+      workspaceStyle: BTN + (sel ? "background:#2743b3;cursor:pointer;" : "background:#b3bfe8;cursor:not-allowed;"),
+      goWorkspace: () => this.goWorkspace(),
+      isAuthView: ["email", "sso", "verifying", "forgot", "reset-sent", "new-password", "accounts",
+        "su-verify", "su-sent", "su-account", "su-prefs", "su-loading", "su-review"].indexOf(s.step) !== -1,
+      isSetupView: ["org-setup", "branding", "hub"].indexOf(s.step) !== -1,
+      isStudioView: s.step === "studio",
+      isOrgStep: s.step === "org-setup", isBrandingStep: s.step === "branding", isHubStep: s.step === "hub",
+      orgName: s.orgName, orgCountry: s.orgCountry, orgArea: s.orgArea, orgTz: s.orgTz, orgSupport: s.orgSupport,
+      brandName: s.brandName || s.orgName,
+      brandInitials: (s.brandName || s.orgName || "").split(" ").filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase(),
+      brandPreviewStyle: "width:64px;height:64px;flex:none;border-radius:14px;display:flex;align-items:center;justify-content:center;font:700 20px 'Inter Tight',sans-serif;color:#fff;background:" + accentHex,
+      onOrgName: e => this.set({ orgName: e.target.value, brandName: e.target.value }),
+      onOrgCountry: e => this.set({ orgCountry: e.target.value }),
+      onOrgArea: e => this.set({ orgArea: e.target.value }),
+      onOrgTz: e => this.set({ orgTz: e.target.value }),
+      onOrgSupport: e => this.set({ orgSupport: e.target.value }),
+      onBrandName: e => this.set({ brandName: e.target.value }),
+      orgDisabled: !(s.orgName.trim() && s.orgArea.trim()),
+      orgContinueStyle: BTN + (s.orgName.trim() && s.orgArea.trim() ? "background:#2743b3;cursor:pointer;" : "background:#b3bfe8;cursor:not-allowed;"),
+      toBranding: () => this.set({ step: "branding", maxStep: Math.max(s.maxStep || 0, 1) }),
+      backToOrg: () => this.set({ step: "org-setup" }),
+      toHub: () => this.set({ step: "hub", maxStep: 2 }),
+      toStudio: () => this.set({ step: "studio" }),
+      signOut: () => this.set({ step: "email", email: "", password: "", selected: null, error: null, provider: null }),
+      accountDetails: Object.entries(ACCOUNT_DETAILS[s.selected] || ACCOUNT_DETAILS.amd).map(([label, value], i) => ({
+        label, value,
+        style: "display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 16px;background:" + (i % 2 ? "#fafbff" : "#fff") + ";" + (i ? "border-top:1px solid #eef1f9;" : "")
+      })),
+      setupSteps: [
+        { num: "STEP 1", label: "Account" },
+        { num: "STEP 2", label: "Branding" },
+        { num: "STEP 3", label: "Review" }
+      ].map((st, i) => {
+        const order = ["org-setup", "branding", "hub"];
+        const here = order.indexOf(s.step);
+        const active = here === i;
+        const reachable = i <= Math.max(here, s.maxStep || 0);
+        const color = active ? "#2743b3" : reachable ? "#5a6484" : "#9aa3bd";
+        return { ...st,
+          locked: !reachable,
+          go: () => { if (reachable) this.set({ step: order[i] }); },
+          numStyle: "display:block;font:600 10.5px 'Inter Tight',sans-serif;letter-spacing:.14em;color:" + color,
+          labelStyle: "display:block;font:500 13px 'Inter Tight',sans-serif;color:" + color + ";margin-top:3px",
+          style: "flex:1;min-width:0;text-align:left;border-radius:10px;padding:12px 14px;background:" + (active ? "#e9edfc" : "#fff") + ";border:1px solid " + (active ? "#c3cdf3" : "#e6eaf4") + ";cursor:" + (reachable && !active ? "pointer" : "default") + ";transition:background .15s ease,box-shadow .15s ease" };
+      }),
+      accents: ACCENTS.map(a => ({ ...a,
+        pick: () => this.set({ accent: a.id }),
+        style: "width:38px;height:38px;border-radius:10px;cursor:pointer;background:" + a.hex + ";border:2px solid " + (s.accent === a.id ? "#0d1020" : "transparent") + ";box-shadow:0 1px 2px rgba(20,30,70,.12)" })),
+      hubTasks: HUB_TASKS.map(t => {
+        const isDone = s.done.indexOf(t.id) !== -1;
+        return { ...t,
+          status: isDone ? "Done" : "Pending",
+          toggle: () => this.set({ done: isDone ? s.done.filter(x => x !== t.id) : s.done.concat(t.id) }),
+          pillStyle: "flex:none;border-radius:20px;padding:3px 10px;font:600 11px 'Inter Tight',sans-serif;letter-spacing:.04em;" + (isDone ? "background:#e9f6ef;color:#2f7a55;" : "background:#fbf7ef;color:#8a6b2a;"),
+          style: "display:flex;flex-direction:column;gap:6px;text-align:left;background:" + (isDone ? "#f7faff" : "#fff") + ";border:1px solid " + (isDone ? "#d8e2fb" : "#e6eaf4") + ";border-radius:11px;padding:14px;cursor:pointer;transition:background .15s ease,box-shadow .15s ease" };
+      }),
+      hubProgress: s.done.length + " of " + HUB_TASKS.length,
+      hubBarStyle: "height:100%;border-radius:3px;background:#2743b3;transition:width .25s ease;width:" + Math.round((s.done.length / HUB_TASKS.length) * 100) + "%",
+      studioNav: STUDIO_NAV.map((label, i) => ({ label,
+        style: "border-radius:8px;padding:9px 12px;font:" + (i === 0 ? "600" : "400") + " 13.5px 'Inter Tight',sans-serif;color:" + (i === 0 ? "#fff" : "rgba(255,255,255,.66)") + ";background:" + (i === 0 ? "rgba(255,255,255,.12)" : "transparent") })),
+      studioStats: STUDIO_STATS,
+      onboardingUrl: "onboarding/index.html?org=" + encodeURIComponent(s.brandName || s.orgName || "")
+        + "&acct=" + encodeURIComponent(s.selected || "") + "&email=" + encodeURIComponent(s.email || ""),
+      accountLabel: sel ? sel.name : "Select an account",
+      doneRole: sel ? sel.role : "",
+      selectStyle: "width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;background:#fff;border:1.5px solid " + (s.listOpen ? "#2743b3" : "#c8d0e8") + ";border-radius:9px;padding:13px 14px;cursor:pointer;" + (s.listOpen ? "box-shadow:0 0 0 3px rgba(39,67,179,.12);" : ""),
+      selectTextStyle: "font:" + (sel ? "500" : "400") + " 14.5px 'Inter Tight',sans-serif;color:" + (sel ? "#0d1020" : "#6b7492") + ";overflow:hidden;text-overflow:ellipsis;white-space:nowrap",
+      accounts: ((rec && rec.accounts) || []).map(id => ACCOUNTS[id]).filter(Boolean).map(a => ({
+        ...a,
+        rowStyle: "width:100%;box-sizing:border-box;display:flex;align-items:center;gap:11px;background:" + (s.selected === a.id ? "#f2f5ff" : "transparent") + ";border:none;border-radius:8px;padding:9px 10px;cursor:pointer;text-align:left",
+        select: () => this.set({ selected: a.id, listOpen: false })
+      })),
+      onEmail: e => this.set({ email: e.target.value, error: null }),
+      onPassword: e => this.set({ password: e.target.value, error: null }),
+      onSsoEmail: e => this.set({ ssoEmail: e.target.value, ssoError: null }),
+      onKey: e => { if (e.key === "Enter" && emailOk && s.password.length > 0) this.submitEmail(); },
+      onSsoKey: e => { if (e.key === "Enter" && ssoOk) this.submitSso(); },
+      submitEmail: () => this.submitEmail(),
+      submitSso: () => this.submitSso(),
+      openGoogle: () => this.openSso("google", ""),
+      openGithub: () => this.openSso("github", ""),
+      toggleList: () => this.set({ listOpen: !s.listOpen }),
+      backToEmail: () => this.set({ step: "email", listOpen: false, selected: null, provider: null, error: null, password: "" }),
+      ssoBack: () => s.ssoMode === "signup"
+        ? this.set({ step: "su-verify", provider: null, ssoMode: "signin" })
+        : this.set({ step: "email", listOpen: false, selected: null, provider: null, error: null, password: "" }),
+      ssoBackLabel: s.ssoMode === "signup" ? "Back to sign up" : "Back to sign in",
+      backToAccounts: () => this.set({ step: "accounts", listOpen: false }),
+      noop: () => {}
+    };
+  }
+}
+</script>
+</body>
+</html>

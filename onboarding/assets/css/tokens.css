@@ -1,0 +1,100 @@
+/* ============================================================
+   Pastel design tokens
+   ------------------------------------------------------------
+   Every hue has exactly THREE tokens. The rule is not stylistic,
+   it is what keeps the palette at WCAG AA:
+
+     --x-fill   pale tint. Backgrounds and surfaces ONLY.
+     --x-solid  mid pastel. DECORATION ONLY — never text, never a
+                border that is the sole carrier of meaning.
+                (Measured 1.5–2.3:1 on white. It cannot pass.)
+     --x-ink    dark. Text, icons, meaningful borders, and the
+                background of filled buttons (with white text).
+
+   Verified ratios (see notes at the bottom of this file).
+   ============================================================ */
+
+:root {
+  /* ---- hues ------------------------------------------------ */
+  --lilac-fill:  #E7E6FB;  --lilac-solid:  #A8A4E6;  --lilac-ink:  #4A45A8;
+  --mint-fill:   #DDEFE5;  --mint-solid:   #8FCFAE;  --mint-ink:   #2F7355;
+  --peach-fill:  #FDE8DB;  --peach-solid:  #F3B98F;  --peach-ink:  #9A5426;
+  --butter-fill: #FCF2DA;  --butter-solid: #EFD08A;  --butter-ink: #7E5B0E;
+  --sky-fill:    #DEEBF9;  --sky-solid:    #92BEE8;  --sky-ink:    #2C5F94;
+  --blush-fill:  #FBE1E5;  --blush-solid:  #EFA6B2;  --blush-ink:  #A63A50;
+
+  /* ---- semantic aliases ------------------------------------ */
+  --brand-fill: var(--lilac-fill);  --brand-solid: var(--lilac-solid);  --brand-ink: var(--lilac-ink);
+  --ok-fill:    var(--mint-fill);   --ok-solid:    var(--mint-solid);   --ok-ink:    var(--mint-ink);
+  --warn-fill:  var(--butter-fill); --warn-solid:  var(--butter-solid); --warn-ink:  var(--butter-ink);
+  --err-fill:   var(--blush-fill);  --err-solid:   var(--blush-solid);  --err-ink:   var(--blush-ink);
+  --info-fill:  var(--sky-fill);    --info-solid:  var(--sky-solid);    --info-ink:  var(--sky-ink);
+
+  /* ---- neutrals -------------------------------------------- */
+  --canvas:      #FAF9FC;   /* page background */
+  --surface:     #FFFFFF;   /* cards, inputs */
+  --surface-2:   #F4F3F8;   /* inset / hover */
+  --line:        #ECEAF3;   /* hairline, decorative */
+  --line-strong: #D9D6E4;   /* input borders */
+  --ink:         #24222E;   /* primary text   15.6:1 on white */
+  --ink-2:       #5C5970;   /* secondary text  6.7:1 on white */
+  --ink-3:       #6E6A82;   /* muted text      5.2:1 on white  */
+  /* NOTE: --ink-3 is deliberately NOT lighter. #8E8BA1 reads nicer
+     but measures 3.3:1 and fails AA for body text. Do not lighten. */
+
+  /* ---- focus ----------------------------------------------- */
+  --focus: #4A45A8;
+  --focus-ring: 0 0 0 3px #FFFFFF, 0 0 0 5px var(--focus);
+
+  /* ---- radii ----------------------------------------------- */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+  --r-pill: 999px;
+
+  /* ---- elevation (diffuse + tinted, never grey/harsh) ------ */
+  --shadow-1: 0 1px 2px rgba(36,34,46,.04), 0 2px 8px rgba(74,69,168,.05);
+  --shadow-2: 0 2px 6px rgba(36,34,46,.05), 0 12px 28px rgba(74,69,168,.08);
+  --shadow-3: 0 8px 24px rgba(36,34,46,.07), 0 24px 60px rgba(74,69,168,.11);
+
+  /* ---- spacing --------------------------------------------- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+
+  /* ---- type ------------------------------------------------ */
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, sans-serif;
+  --t-display: 400 34px/1.22 var(--font);
+  --t-title:   600 20px/1.35 var(--font);
+  --t-body:    400 15px/1.6  var(--font);
+  --t-label:   500 14px/1.4  var(--font);
+  --t-small:   400 13px/1.5  var(--font);
+
+  --dur: 180ms;
+  --ease: cubic-bezier(.2, .7, .3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ============================================================
+   Measured contrast (recomputed, not estimated)
+
+   ink on white / on canvas / on own fill   — AA body text needs 4.5
+     lilac   7.76 / 7.39 / 6.32
+     mint    5.67 / 5.40 / 4.74
+     peach   5.72 / 5.46 / 4.83
+     butter  6.19 / 5.91 / 5.56
+     sky     6.62 / 6.31 / 5.47
+     blush   6.28 / 5.99 / 5.09
+
+   white text on ink (filled buttons)       — needs 4.5
+     5.67 – 7.76, all pass
+
+   solid on white                           — needs 3.0 to carry meaning
+     1.49 – 2.30, ALL FAIL. This is why solid is decoration only.
+   ============================================================ */
